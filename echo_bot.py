@@ -3,9 +3,9 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import requests
 from random import randint
+from bot_token import BOT_TOKEN
 
 
-BOT_TOKEN: str = '6266775802:AAEh9pNqqdW-4_NVQp5ygtDB-j6ErZkEOSo'
 CAT_API_URL: str = 'https://api.thecatapi.com/v1/images/search'
 DOG_API_URL: str = 'https://dog.ceo/api/breeds/image/random'
 
@@ -14,6 +14,10 @@ bot: Bot = Bot(BOT_TOKEN)
 dp: Dispatcher = Dispatcher()
 animal_response: requests.Response
 animal_choice: int
+
+
+def generate_number() -> int:
+    return randint(1, 2)
 
 
 @dp.message(Command(commands=['start']))
@@ -28,7 +32,7 @@ async def process_help_command(message: Message):
 
 @dp.message(Command(commands=['animal']))
 async def process_animal_command(message: Message):
-    animal_choice = randint(1, 2)
+    animal_choice = generate_number()
     if animal_choice == 1:
         animal_response = requests.get(DOG_API_URL)
         dog_img = animal_response.json()['message']
